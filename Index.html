@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcano del Giorno</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+```
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #5b247a 0%, #1e3a8a 50%, #1e40af 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 500px;
+        width: 100%;
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    h1 {
+        color: white;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+        color: #d8b4fe;
+        font-size: 1rem;
+    }
+
+    .card-container {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 1.5rem;
+        padding: 2rem;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .card-display {
+        text-align: center;
+    }
+
+    .tarot-card {
+        width: 160px;
+        height: 224px;
+        margin: 0 auto 1.5rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .tarot-card.initial {
+        background: linear-gradient(135deg, #9333ea 0%, #4f46e5 100%);
+    }
+
+    .tarot-card.revealing {
+        background: linear-gradient(135deg, #9333ea 0%, #4f46e5 100%);
+        animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    .tarot-card.revealed {
+        background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+        border: 4px solid #fcd34d;
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    .card-icon {
+        width: 64px;
+        height: 64px;
+        color: white;
+    }
+
+    .card-icon.spinning {
+        animation: spin 1s linear infinite;
+    }
+
+    .card-content {
+        padding: 1rem;
+        color: white;
+        text-align: center;
+    }
+
+    .card-content .icon {
+        width: 48px;
+        height: 48px;
+        margin: 0 auto 0.5rem;
+    }
+
+    .card-name-small {
+        font-weight: bold;
+        font-size: 0.875rem;
+    }
+
+    .message {
+        color: white;
+        margin-bottom: 1.5rem;
+        opacity: 0.8;
+    }
+
+    .revealing-text {
+        color: white;
+        font-size: 1.125rem;
+    }
+
+    .result {
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    .card-title {
+        color: white;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 0.75rem;
+    }
+
+    .card-meaning {
+        color: #d8b4fe;
+        line-height: 1.6;
+    }
+
+    .extract-button {
+        width: 100%;
+        margin-top: 2rem;
+        background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
+        color: white;
+        font-weight: 600;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-size: 1rem;
+    }
+
+    .extract-button:hover:not(:disabled) {
+        background: linear-gradient(135deg, #9333ea 0%, #4f46e5 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 15px 20px -3px rgba(0, 0, 0, 0.4);
+    }
+
+    .extract-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .button-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.7;
+        }
+    }
+
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (max-width: 640px) {
+        h1 {
+            font-size: 2rem;
+        }
+        
+        .card-container {
+            padding: 1.5rem;
+        }
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Arcano del Giorno</h1>
+            <p class="subtitle">Scopri quale carta ti guida oggi</p>
+        </div>
+
+```
+    <div class="card-container">
+        <div class="card-display" id="cardDisplay">
+            <div class="tarot-card initial" id="tarotCard">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 3l7 7-7 7M12 3l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="12" cy="12" r="1" fill="currentColor"/>
+                </svg>
+            </div>
+            <p class="message">Clicca sul pulsante per estrarre il tuo arcano</p>
+        </div>
+
+        <button class="extract-button" id="extractButton" onclick="estraiArcano()">
+            <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 3l7 7-7 7M12 3l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="12" r="1" fill="currentColor"/>
+            </svg>
+            <span id="buttonText">Estrai Arcano</span>
+        </button>
+    </div>
+</div>
+
+<script>
+    const tarocchi = [
+        { nome: "Il Matto", significato: "Nuovi inizi, spontaneità, avventura, libertà" },
+        { nome: "Il Mago", significato: "Manifestazione, risorse, potere personale, azione" },
+        { nome: "La Papessa", significato: "Intuizione, mistero, conoscenza interiore, saggezza" },
+        { nome: "L'Imperatrice", significato: "Abbondanza, creatività, femminilità, natura" },
+        { nome: "L'Imperatore", significato: "Autorità, struttura, controllo, stabilità" },
+        { nome: "Il Papa", significato: "Tradizione, spiritualità, guida, insegnamento" },
+        { nome: "Gli Amanti", significato: "Scelte, amore, armonia, valori personali" },
+        { nome: "Il Carro", significato: "Determinazione, volontà, vittoria, progresso" },
+        { nome: "La Forza", significato: "Coraggio, compassione, autocontrollo, pazienza" },
+        { nome: "L'Eremita", significato: "Introspezione, ricerca interiore, solitudine costruttiva" },
+        { nome: "La Ruota della Fortuna", significato: "Cicli, destino, cambiamento, opportunità" },
+        { nome: "La Giustizia", significato: "Equità, verità, causa ed effetto, decisioni" },
+        { nome: "L'Appeso", significato: "Nuove prospettive, sacrificio, pausa, surrendering" },
+        { nome: "La Morte", significato: "Trasformazione, fine di un ciclo, rinnovamento" },
+        { nome: "La Temperanza", significato: "Equilibrio, moderazione, pazienza, armonia" },
+        { nome: "Il Diavolo", significato: "Tentazione, materialismo, dipendenze, limitazioni" },
+        { nome: "La Torre", significato: "Cambiamento improvviso, rivelazione, liberazione" },
+        { nome: "Le Stelle", significato: "Speranza, ispirazione, serenità, rinnovamento spirituale" },
+        { nome: "La Luna", significato: "Illusione, intuizione, sogni, mondo inconscio" },
+        { nome: "Il Sole", significato: "Gioia, successo, vitalità, chiarezza" },
+        { nome: "Il Giudizio", significato: "Rinascita, riflessione, chiamata interiore, risveglio" },
+        { nome: "Il Mondo", significato: "Completamento, realizzazione, successo, unità" }
+    ];
+
+    let currentArcano = null;
+
+    function estraiArcano() {
+        const button = document.getElementById('extractButton');
+        const cardDisplay = document.getElementById('cardDisplay');
+        const tarotCard = document.getElementById('tarotCard');
+        
+        button.disabled = true;
+        
+        // Stato revealing
+        cardDisplay.innerHTML = `
+            <div class="tarot-card revealing" id="tarotCard">
+                <svg class="card-icon spinning" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 3l7 7-7 7M12 3l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="12" cy="12" r="1" fill="currentColor"/>
+                </svg>
+            </div>
+            <p class="revealing-text">Rivelazione in corso...</p>
+        `;
+
+        setTimeout(() => {
+            const indice = Math.floor(Math.random() * tarocchi.length);
+            currentArcano = tarocchi[indice];
+            
+            cardDisplay.innerHTML = `
+                <div class="tarot-card revealed">
+                    <div class="card-content">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 3l7 7-7 7M12 3l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="12" r="1" fill="currentColor"/>
+                        </svg>
+                        <p class="card-name-small">${currentArcano.nome}</p>
+                    </div>
+                </div>
+                <div class="result">
+                    <h2 class="card-title">${currentArcano.nome}</h2>
+                    <p class="card-meaning">${currentArcano.significato}</p>
+                </div>
+            `;
+            
+            document.getElementById('buttonText').textContent = 'Estrai Nuovo Arcano';
+            button.disabled = false;
+        }, 1500);
+    }
+</script>
+```
+
+</body>
+</html>
